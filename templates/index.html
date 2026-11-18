@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111930">
+  <title>AttendanceSmart — Student Attendance Monitoring</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <!-- Locally stored vector icons: no internet connection required for the interface. -->
+  <svg class="svg-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="ico-graduate" viewBox="0 0 24 24"><path d="m2 10 10-5 10 5-10 5-10-5Zm4 2.5v5c3.5 3 8.5 3 12 0v-5M22 10v7"/></symbol>
+    <symbol id="ico-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3V10Zm6 10v-7h6v7"/></symbol>
+    <symbol id="ico-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.86M16 3.14a4 4 0 0 1 0 7.72"/></symbol>
+    <symbol id="ico-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+    <symbol id="ico-chart" viewBox="0 0 24 24"><path d="M3 21h18M6 17v-5M11 17V7M16 17V3M21 17v-8"/></symbol>
+    <symbol id="ico-settings" viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="m19.4 15 .1.1 1.3 1-.9 1.6-1.6-.6-.2.1a8 8 0 0 1-2 1.1L15.8 20h-2l-.4-1.7a8 8 0 0 1-2.7 0L10.2 20h-2L8 18.3a8 8 0 0 1-2-1.1l-1.7.5-.9-1.6 1.4-1a8 8 0 0 1 0-2.2l-1.4-1 .9-1.6 1.7.6a8 8 0 0 1 2-1.2L8.2 8h2l.5 1.7a8 8 0 0 1 2.7 0L13.8 8h2l.3 1.7a8 8 0 0 1 2 1.2l1.7-.6.9 1.6-1.4 1a8 8 0 0 1 .1 2.1Z" transform="translate(-1 -2)"/></symbol>
+    <symbol id="ico-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="ico-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="ico-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+    <symbol id="ico-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="ico-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m7 12 3.5 3.5L17 9"/></symbol>
+    <symbol id="ico-alert" viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3ZM12 9v5M12 18h.01"/></symbol>
+    <symbol id="ico-user-x" viewBox="0 0 24 24"><path d="M14 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M8 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM17 10l5 5M22 10l-5 5"/></symbol>
+    <symbol id="ico-bulb" viewBox="0 0 24 24"><path d="M9 18h6M9.5 21h5M8 14a7 7 0 1 1 8 0l-1 2H9l-1-2ZM12 1v2M4 4l2 2M20 4l-2 2M2 12h2M20 12h2"/></symbol>
+    <symbol id="ico-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15M10 10v7M14 10v7"/></symbol>
+    <symbol id="ico-edit" viewBox="0 0 24 24"><path d="m4 16-.8 4.8L8 20l12-12-4-4L4 16ZM14 6l4 4"/></symbol>
+    <symbol id="ico-save" viewBox="0 0 24 24"><path d="M4 3h14l3 3v15H3V3h1Zm3 0v7h10V3M7 21v-8h10v8"/></symbol>
+    <symbol id="ico-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="ico-refresh" viewBox="0 0 24 24"><path d="M20 7V3l-3.5 3.5A8 8 0 1 0 20 13M20 7h-6"/></symbol>
+    <symbol id="ico-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 6 3.4 9 8 11 4.6-2 8-5 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="ico-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="ico-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+    <symbol id="ico-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><img class="brand-logo" src="{{ url_for('static', filename='images/thumbs-up-logo.png') }}" alt="AttendanceSmart thumbs-up logo" width="52" height="52"><div class="brand-copy"><strong>AttendanceSmart</strong><small>STUDENT MONITORING</small></div></div>
+      <div class="sidebar-caption">WORKSPACE</div>
+      <nav class="nav" aria-label="Main navigation">
+        <button type="button" class="nav-item active" data-nav="dashboard"><svg><use href="#ico-home"/></svg><span>Dashboard</span></button>
+        <button type="button" class="nav-item" data-nav="students"><svg><use href="#ico-users"/></svg><span>Students</span></button>
+        <button type="button" class="nav-item" data-nav="attendance"><svg><use href="#ico-check-circle"/></svg><span>Attendance</span></button>
+        <button type="button" class="nav-item" data-nav="schedules"><svg><use href="#ico-calendar"/></svg><span>Schedules</span></button>
+        <button type="button" class="nav-item" data-nav="reports"><svg><use href="#ico-chart"/></svg><span>Reports</span></button>
+      </nav>
+      <div class="nav-divider"></div>
+      <nav class="nav"><button type="button" class="nav-item" data-nav="settings"><svg><use href="#ico-settings"/></svg><span>Settings</span></button></nav>
+    </aside>
+
+    <div class="content-area">
+      <header class="topbar">
+        <div class="heading-group">
+          <button type="button" class="icon-button mobile-toggle" id="menu-toggle" aria-label="Toggle navigation"><svg><use href="#ico-menu"/></svg></button>
+          <div>
+            <h1 id="page-title">Attendance Monitoring</h1>
+            <p id="page-subtitle">Student Attendance Monitoring System Using Arrays and Sets</p>
+            <div class="date-context" id="header-date"></div>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="search-wrap"><svg><use href="#ico-search"/></svg><input id="global-search" type="search" placeholder="Search students..." aria-label="Search students" autocomplete="off"></div>
+        </div>
+      </header>
+
+      <main id="main-content">
+        <!-- Dashboard -->
+        <section class="view active" id="view-dashboard" aria-label="Dashboard">
+          <div class="view-toolbar"><div class="section-overline">CLASSROOM OVERVIEW</div><label class="date-selector"><svg><use href="#ico-calendar"/></svg><input type="date" id="dash-date" aria-label="Dashboard date"></label></div>
+          <div class="metrics-grid">
+            <article class="metric-card"><div class="metric-copy"><span>Present</span><strong id="metric-present">—</strong><small id="metric-present-caption">Recorded for selected date</small></div><span class="metric-icon green"><svg><use href="#ico-users"/></svg></span></article>
+            <article class="metric-card"><div class="metric-copy"><span>Absent</span><strong id="metric-absent">—</strong><small id="metric-absent-caption">Recorded for selected date</small></div><span class="metric-icon red"><svg><use href="#ico-user-x"/></svg></span></article>
+            <article class="metric-card"><div class="metric-copy"><span>Late arrivals</span><strong id="metric-late">—</strong><small>After scheduled class time</small></div><span class="metric-icon amber"><svg><use href="#ico-clock"/></svg></span></article>
+            <article class="metric-card"><div class="metric-copy"><span>Attendance rate</span><strong id="metric-rate">—</strong><small id="metric-rate-caption">Based on marked records</small></div><span class="metric-icon blue"><svg><use href="#ico-chart"/></svg></span></article>
+          </div>
+
+          <div class="insights-grid">
+            <article class="panel chart-panel"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon"><svg><use href="#ico-chart"/></svg></span><h2>Weekly attendance rate</h2></div><span class="subtle-pill">Mon – Fri</span></div><div class="chart-body" id="week-chart"><div class="empty-inline">Add attendance to see this week's chart.</div></div><p class="chart-footnote">Rate = (Present + Late) ÷ (Present + Late + Absent). Excused and unmarked are excluded.</p></article>
+            <article class="panel intelligence-panel"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon bulb"><svg><use href="#ico-bulb"/></svg></span><h2>Intelligent insights</h2></div><span class="rule-badge">Rule-based</span></div><div class="insight-list" id="dashboard-insights"><div class="empty-inline">Insights will appear here.</div></div></article>
+          </div>
+
+          <article class="panel table-panel"><div class="panel-heading table-heading"><div class="panel-title"><span class="panel-heading-icon"><svg><use href="#ico-users"/></svg></span><h2>Student attendance</h2><span class="count-hint" id="dashboard-student-count"></span></div><div class="filter-group" id="dashboard-filters"><button class="filter-chip selected" data-filter="All">All</button><button class="filter-chip" data-filter="Present">Present</button><button class="filter-chip" data-filter="Late">Late</button><button class="filter-chip" data-filter="Absent">Absent</button></div></div>
+            <div class="table-wrap"><table><thead><tr><th>Student name</th><th>Course / Section</th><th>Check-in</th><th>Status</th></tr></thead><tbody id="dashboard-rows"></tbody></table></div>
+            <div class="panel-footer"><span id="dashboard-footnote"></span><button class="inline-link" type="button" data-go="attendance">Manage attendance <svg><use href="#ico-arrow"/></svg></button></div>
+          </article>
+        </section>
+
+        <!-- Students -->
+        <section class="view" id="view-students" aria-label="Students">
+          <div class="section-header"><div><div class="section-overline">STUDENT DIRECTORY</div><h2>Manage students</h2><p>Add students to your class before taking attendance.</p></div><span class="small-count" id="student-total-badge">0 students</span></div>
+          <div class="two-column-layout">
+            <article class="panel form-card"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon"><svg><use href="#ico-plus"/></svg></span><h2 id="student-form-title">Add a student</h2></div></div>
+              <form id="student-form" class="stack-form">
+                <input type="hidden" id="edit-student-id">
+                <label>Full name <span>*</span><input id="student-name" required maxlength="80" placeholder="e.g. Juan Dela Cruz" autocomplete="off"></label>
+                <label>Course / Section <span>*</span><input id="student-section" required maxlength="45" placeholder="e.g. BSCS - 3A" autocomplete="off"></label>
+                <label>Student ID <span class="optional">(optional)</span><input id="student-number" maxlength="30" placeholder="Auto-generated if blank" autocomplete="off"></label>
+                <button class="primary-btn" id="save-student" type="submit"><svg><use href="#ico-plus"/></svg> Add student</button>
+                <button class="text-btn hidden" id="cancel-edit" type="button">Cancel editing</button>
+              </form>
+            </article>
+            <article class="panel table-panel"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon"><svg><use href="#ico-users"/></svg></span><h2>Class roster</h2></div><span class="count-hint" id="roster-count"></span></div><div class="table-wrap"><table><thead><tr><th>Student ID</th><th>Full name</th><th>Course / Section</th><th class="right">Actions</th></tr></thead><tbody id="student-rows"></tbody></table></div></article>
+          </div>
+        </section>
+
+        <!-- Attendance -->
+        <section class="view" id="view-attendance" aria-label="Attendance">
+          <div class="section-header"><div><div class="section-overline">DAILY RECORDS</div><h2>Take attendance</h2><p>Choose a date, mark a status, then save each row.</p></div><label class="date-selector"><svg><use href="#ico-calendar"/></svg><input type="date" id="attendance-date" aria-label="Attendance date"></label></div>
+          <div class="mini-metrics" id="attendance-stats"><span>Present <strong id="count-present">0</strong></span><span>Late <strong id="count-late">0</strong></span><span>Absent <strong id="count-absent">0</strong></span><span>Excused <strong id="count-excused">0</strong></span><span>Unmarked <strong id="count-unmarked">0</strong></span></div>
+          <article class="panel"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon"><svg><use href="#ico-check-circle"/></svg></span><h2>Attendance records</h2></div><p class="helper-caption">When a Present check-in exceeds your schedule and grace period, it's saved as Late.</p></div><div class="table-wrap"><table class="attendance-table"><thead><tr><th>Student</th><th>Course / Section</th><th>Status</th><th>Check-in time</th><th>Action</th></tr></thead><tbody id="attendance-rows"></tbody></table></div></article>
+        </section>
+
+        <!-- Schedules -->
+        <section class="view" id="view-schedules" aria-label="Schedules">
+          <div class="section-header"><div><div class="section-overline">CLASS SETTINGS</div><h2>Class schedule</h2><p>Set start times so AttendanceSmart can detect late arrivals automatically.</p></div></div>
+          <article class="panel schedule-panel"><form id="schedule-form"><div class="schedule-intro"><span class="metric-icon blue"><svg><use href="#ico-clock"/></svg></span><div><strong>Weekly class schedule</strong><p>Enable the days you have class and choose their start times.</p></div></div><div id="schedule-days" class="schedule-days"></div><div class="schedule-bottom"><label>Late grace period <span class="optional">(minutes)</span><input id="grace-minutes" type="number" min="0" max="60" required value="10"></label><button class="primary-btn" type="submit"><svg><use href="#ico-save"/></svg> Save schedule</button></div></form></article>
+        </section>
+
+        <!-- Reports -->
+        <section class="view" id="view-reports" aria-label="Reports">
+          <div class="section-header"><div><div class="section-overline">ATTENDANCE ANALYTICS</div><h2>Reports & insights</h2><p>Simple rules flag attendance patterns that may need follow-up.</p></div><span class="subtle-pill" id="report-range">Last 30 days</span></div>
+          <div class="reports-cards"><div class="panel"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon bulb"><svg><use href="#ico-bulb"/></svg></span><h2>Attendance observations</h2></div></div><div id="report-insights" class="insight-list"></div></div><div class="panel report-explainer"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon"><svg><use href="#ico-info"/></svg></span><h2>How analysis works</h2></div></div><div class="rules"><div><strong>Absence alert</strong><span>3 or more absences in 30 days</span></div><div><strong>Late arrival alert</strong><span>2 or more late check-ins in 7 days</span></div><div><strong>Attendance percentage</strong><span>Present + Late divided by counted sessions</span></div></div></div></div>
+          <article class="panel table-panel"><div class="panel-heading"><div class="panel-title"><span class="panel-heading-icon"><svg><use href="#ico-chart"/></svg></span><h2>Student attendance summary</h2></div></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Section</th><th>Present</th><th>Late</th><th>Absent</th><th>Excused</th><th>Rate</th></tr></thead><tbody id="report-rows"></tbody></table></div><div class="panel-footer muted">Last 30 calendar days ending on the selected dashboard date. Excused sessions are excluded from the rate.</div></article>
+        </section>
+
+        <!-- Settings -->
+        <section class="view" id="view-settings" aria-label="Settings">
+          <div class="section-header"><div><div class="section-overline">SYSTEM TOOLS</div><h2>Settings</h2><p>Manage sample data for demonstrations and presentations.</p></div></div>
+          <div class="settings-grid"><article class="panel setting-card"><span class="setting-badge"><svg><use href="#ico-users"/></svg></span><h2>Load demo classroom</h2><p>Fill an <strong>empty student list</strong> with 10 example students and 10 school days of sample attendance. Useful when presenting the dashboard and insights.</p><button type="button" class="secondary-btn" id="load-demo"><svg><use href="#ico-plus"/></svg> Load sample data</button></article><article class="panel setting-card"><span class="setting-badge red"><svg><use href="#ico-trash"/></svg></span><h2>Clear student records</h2><p>Remove all students and attendance records. This cannot be undone. Your saved schedule stays unchanged.</p><button type="button" class="danger-outline" id="clear-data"><svg><use href="#ico-trash"/></svg> Clear all records</button></article></div>
+        </section>
+      </main>
+      <footer class="site-footer"><span>AttendanceSmart · Student Attendance Monitoring</span></footer>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="mobile-overlay" class="mobile-overlay" hidden></div>
+</body>
+</html>
